@@ -240,7 +240,7 @@
                         <h3 class="font-medium text-blue-800 mb-2">ご利用について</h3>
                         <ul class="text-sm text-blue-700 space-y-1">
                             <li>• クレジットは毎月リセットされ、翌月への持ち越しはできません</li>
-                            <li>• 追加クレジットは100クレジットあたり1,080円で購入できます</li>
+                            <li>• 追加クレジットは1000クレジットあたり1,080円で購入できます</li>
                             <li>• 入力値を変更すると自動的に計算結果が更新されます</li>
                         </ul>
                     </div>
@@ -265,8 +265,8 @@
             smartProperty: 10
         };
 
-        // Cost per 100 additional credits
-        const costPer100Credits = 1080;
+        // Cost per 1000 additional credits
+        const costPer1000Credits = 1080;
 
         function calculateCredits() {
             const licenseTier = document.getElementById('licenseTier').value;
@@ -289,7 +289,7 @@
             const additionalCreditsNeeded = Math.max(0, totalCredits - includedCredits);
 
             // Calculate additional cost
-            const additionalCost = Math.ceil(additionalCreditsNeeded / 100) * costPer100Credits;
+            const additionalCost = Math.ceil(additionalCreditsNeeded / 1000) * costPer1000Credits;
 
             // Update display
             document.getElementById('totalCredits').textContent = totalCredits.toLocaleString();
