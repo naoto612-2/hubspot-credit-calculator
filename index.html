@@ -321,13 +321,16 @@
             // Calculate additional credits needed
             const additionalCreditsNeeded = Math.max(0, totalCredits - includedCredits);
 
-            // Calculate additional cost
-            const additionalCost = Math.ceil(additionalCreditsNeeded / 1000) * costPer1000Credits;
+            // Round up to purchasable units (1,000 credits) and calculate cost
+            const purchasedCredits = additionalCreditsNeeded === 0
+                ? 0
+                : Math.ceil(additionalCreditsNeeded / 1000) * 1000;
+            const additionalCost = (purchasedCredits / 1000) * costPer1000Credits;
 
             // Update display
             document.getElementById('totalCredits').textContent = totalCredits.toLocaleString();
             document.getElementById('includedCredits').textContent = includedCredits.toLocaleString();
-            document.getElementById('additionalCredits').textContent = additionalCreditsNeeded.toLocaleString();
+            document.getElementById('additionalCredits').textContent = purchasedCredits.toLocaleString();
             document.getElementById('additionalCost').textContent = '¥' + additionalCost.toLocaleString();
         }
 
