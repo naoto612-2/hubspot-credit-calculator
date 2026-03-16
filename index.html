@@ -220,22 +220,6 @@
                 </div>
             </div>
 
-            <!-- Pricing -->
-            <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">
-                    追加クレジット単価
-                </h2>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <label for="costPer1000Credits" class="block text-sm font-medium text-gray-700 mb-2">
-                        1,000クレジットあたりの価格（円）
-                    </label>
-                    <div class="flex items-center space-x-4">
-                        <input type="number" id="costPer1000Credits" class="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500" min="0" step="1" value="1080">
-                        <span class="text-sm text-gray-600">円 / 1,000クレジット</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Results -->
             <div class="bg-gray-50 p-6 rounded-lg">
                 <h2 class="text-xl font-semibold mb-4 text-gray-800">
@@ -280,7 +264,7 @@
                         <h3 class="font-medium text-blue-800 mb-2">ご利用について</h3>
                         <ul class="text-sm text-blue-700 space-y-1">
                             <li>• クレジットは毎月リセットされ、翌月への持ち越しはできません</li>
-                            <li>• 追加クレジット単価（1,000クレジットあたりの価格）は上の入力欄で変更できます</li>
+                            <li>• 追加クレジットは1000クレジットあたり1,080円で購入できます</li>
                             <li>• 入力値を変更すると自動的に計算結果が更新されます</li>
                         </ul>
                     </div>
@@ -308,6 +292,9 @@
             dataStudioOver5m: 200
         };
 
+        // Cost per 1000 additional credits
+        const costPer1000Credits = 1080;
+
         function calculateCredits() {
             const licenseTier = document.getElementById('licenseTier').value;
             const customerSupport = parseInt(document.getElementById('customerSupport').value) || 0;
@@ -317,7 +304,6 @@
             const dataStudioUnder500k = parseInt(document.getElementById('dataStudioUnder500k').value) || 0;
             const dataStudio500kTo5m = parseInt(document.getElementById('dataStudio500kTo5m').value) || 0;
             const dataStudioOver5m = parseInt(document.getElementById('dataStudioOver5m').value) || 0;
-            const costPer1000Credits = parseInt(document.getElementById('costPer1000Credits').value) || 0;
 
             // Calculate total credits needed
             const totalCredits = 
@@ -354,7 +340,6 @@
         document.getElementById('dataStudioUnder500k').addEventListener('input', calculateCredits);
         document.getElementById('dataStudio500kTo5m').addEventListener('input', calculateCredits);
         document.getElementById('dataStudioOver5m').addEventListener('input', calculateCredits);
-        document.getElementById('costPer1000Credits').addEventListener('input', calculateCredits);
 
         // Initial calculation
         calculateCredits();
