@@ -193,6 +193,46 @@
                             <span class="text-sm text-gray-600">× 10クレジット/レコード</span>
                         </div>
                     </div>
+
+                    <!-- Data Studio -->
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Data Studio（Beta）
+                        </label>
+                        <div class="grid gap-3">
+                            <div class="flex items-center space-x-4">
+                                <input type="number" id="dataStudioUnder500k" class="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500" placeholder="データセット使用回数（workflow/segment/CRM sync/export、< 50万行）" min="0">
+                                <span class="text-sm text-gray-600">× 25クレジット/回</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <input type="number" id="dataStudio500kTo5m" class="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500" placeholder="データセット使用回数（workflow/segment/CRM sync/export、50万〜500万行）" min="0">
+                                <span class="text-sm text-gray-600">× 75クレジット/回</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <input type="number" id="dataStudioOver5m" class="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500" placeholder="データセット使用回数（workflow/segment/CRM sync/export、> 500万行）" min="0">
+                                <span class="text-sm text-gray-600">× 200クレジット/回</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-xs text-gray-600">
+                            ※ 1回＝データセットを workflow / segment / CRM sync / export のいずれかで「使用」した1アクション（レポートでの使用はクレジット消費なし）
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">
+                    追加クレジット単価
+                </h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <label for="costPer1000Credits" class="block text-sm font-medium text-gray-700 mb-2">
+                        1,000クレジットあたりの価格（円）
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <input type="number" id="costPer1000Credits" class="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500" min="0" step="1" value="1080">
+                        <span class="text-sm text-gray-600">円 / 1,000クレジット</span>
+                    </div>
                 </div>
             </div>
 
@@ -240,7 +280,7 @@
                         <h3 class="font-medium text-blue-800 mb-2">ご利用について</h3>
                         <ul class="text-sm text-blue-700 space-y-1">
                             <li>• クレジットは毎月リセットされ、翌月への持ち越しはできません</li>
-                            <li>• 追加クレジットは1000クレジットあたり1,080円で購入できます</li>
+                            <li>• 追加クレジット単価（1,000クレジットあたりの価格）は上の入力欄で変更できます</li>
                             <li>• 入力値を変更すると自動的に計算結果が更新されます</li>
                         </ul>
                     </div>
@@ -262,11 +302,11 @@
             customerSupport: 100,
             contactEnrichment: 10,
             companyEnrichment: 10,
-            smartProperty: 10
+            smartProperty: 10,
+            dataStudioUnder500k: 25,
+            dataStudio500kTo5m: 75,
+            dataStudioOver5m: 200
         };
-
-        // Cost per 1000 additional credits
-        const costPer1000Credits = 1080;
 
         function calculateCredits() {
             const licenseTier = document.getElementById('licenseTier').value;
@@ -274,13 +314,20 @@
             const contactEnrichment = parseInt(document.getElementById('contactEnrichment').value) || 0;
             const companyEnrichment = parseInt(document.getElementById('companyEnrichment').value) || 0;
             const smartProperty = parseInt(document.getElementById('smartProperty').value) || 0;
+            const dataStudioUnder500k = parseInt(document.getElementById('dataStudioUnder500k').value) || 0;
+            const dataStudio500kTo5m = parseInt(document.getElementById('dataStudio500kTo5m').value) || 0;
+            const dataStudioOver5m = parseInt(document.getElementById('dataStudioOver5m').value) || 0;
+            const costPer1000Credits = parseInt(document.getElementById('costPer1000Credits').value) || 0;
 
             // Calculate total credits needed
             const totalCredits = 
                 (customerSupport * creditCosts.customerSupport) +
                 (contactEnrichment * creditCosts.contactEnrichment) +
                 (companyEnrichment * creditCosts.companyEnrichment) +
-                (smartProperty * creditCosts.smartProperty);
+                (smartProperty * creditCosts.smartProperty) +
+                (dataStudioUnder500k * creditCosts.dataStudioUnder500k) +
+                (dataStudio500kTo5m * creditCosts.dataStudio500kTo5m) +
+                (dataStudioOver5m * creditCosts.dataStudioOver5m);
 
             // Get included credits for the license tier
             const includedCredits = licenseCredits[licenseTier];
@@ -304,6 +351,10 @@
         document.getElementById('contactEnrichment').addEventListener('input', calculateCredits);
         document.getElementById('companyEnrichment').addEventListener('input', calculateCredits);
         document.getElementById('smartProperty').addEventListener('input', calculateCredits);
+        document.getElementById('dataStudioUnder500k').addEventListener('input', calculateCredits);
+        document.getElementById('dataStudio500kTo5m').addEventListener('input', calculateCredits);
+        document.getElementById('dataStudioOver5m').addEventListener('input', calculateCredits);
+        document.getElementById('costPer1000Credits').addEventListener('input', calculateCredits);
 
         // Initial calculation
         calculateCredits();
